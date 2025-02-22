@@ -1,6 +1,6 @@
 # PSYSEQUENCE
 
-![Screenshot](img/IndexScreenshot.png)
+![Screenshot](Resources/Images/IndexScreenshot.png)
 
 **PSYSEQUENCE** è un'applicazione web interattiva progettata per stimolare e sviluppare le abilità logico-temporali nei bambini. Attraverso la creazione e l'ordinamento di flashcard, l'app aiuta i piccoli a comprendere il concetto di sequenza e ordine cronologico in modo ludico e coinvolgente.
 
