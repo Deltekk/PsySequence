@@ -8,10 +8,9 @@
         <title>PsySequence</title>
     </head>
     <body class="w-screen min-h-screen flex flex-col justify-center items-center bg-emerald-500">
-        <!-- Mettere logo -->
         <h1 class="text-white text-4xl mb-6 font-bold mt-14"> PSYSEQUENCE - CREAZIONE SEQUENZA </h1>
-        <p class="mb-6 text-2xl"> Inserisci le immagini in ordine, per come dovrebbero essere ricostruite </p>
-        <div class="flex flex-row justify-center items-center mb-14">
+        <p class="mb-6 text-2xl  text-white"> Inserisci le immagini in ordine, per come dovrebbero essere ricostruite </p>
+        <div class="flex flex-row justify-center items-center mb-14 text-white">
             <button class="bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-center p-5 rounded-xl transition-all duration-200 mr-5 ml-5 cursor-pointer" onclick="addImage()"> Aggiungi immagine </button>
             <button class="bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-center p-5 rounded-xl transition-all duration-200 mr-5 ml-5 cursor-pointer" onclick="createSequence()"> Crea sequenza </button>
             <a href="../Index.html" class="bg-rose-400 hover:bg-rose-500 active:bg-rose-600 text-center p-5 rounded-xl transition-all duration-200 mr-5 ml-5"> Torna indietro </a>
@@ -87,7 +86,7 @@
 
                 inputDiv.innerHTML = `
                     <div id="inputDiv${imageCount}" class="ml-5 mr-5 mt-5 mb-5">
-                        <label for="input${imageCount}" class="cursor-pointer bg-white border-2 border-solid text-black border-black flex flex-col justify-center items-center rounded-xl w-80 h-80"> 
+                        <label for="input${imageCount}" class="cursor-pointer bg-white border-4 border-solid text-black border-black flex flex-col justify-center items-center rounded-xl w-80 h-80"> 
                             <p class="mb-6 text-xl"> Inserisci la ${imageCount}° immagine  </p>
                             <i class="fa-solid fa-upload text-2xl"></i>
                         </label>
