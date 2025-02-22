@@ -1,0 +1,15 @@
+{
+  "name": "psysequence",
+  "version": "1.0.0",
+  "description": "Simple app for testing logical-temporal intelligence in kids",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./Resources/Css/input.css -o ./Resources/Css/output.css --watch"
+  },
+  "author": "Daniele Susino",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.8",
+    "tailwindcss": "^4.0.8"
+  }
+}
