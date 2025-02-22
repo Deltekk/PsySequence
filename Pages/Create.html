@@ -9,11 +9,135 @@
     <body class="w-screen h-screen flex flex-col justify-center items-center bg-emerald-500">
         <!-- Mettere logo -->
         <h1 class="text-white text-4xl mb-6 font-bold"> PSYSEQUENCE - CREAZIONE SEQUENZA </h1>
-        <p class="mb-6"> Inserisci le immagini in ordine, per come dovrebbero essere ricostruite </p>
-        <a href="../Index.html" class="text-white hover:text-amber-400 transition-all duration-200 mb-14"> Torna indietro </a>
-        <div class="text-white flex flex-col text-2xl mb-14">
-            <label for="image1" class="cursor-pointer bg-gray-500 border-2 border-dotted"> Inserisci la 1° immagine </label>
-            <input type="file" name="image1" id="image1" accept=".jpg, .webp, .png" class="hidden">
+        <p class="mb-6 text-2xl"> Inserisci le immagini in ordine, per come dovrebbero essere ricostruite </p>
+        <div class="flex flex-row justify-center items-center mb-14">
+            <a href="../Index.html" class="bg-rose-400 hover:bg-rose-500 active:bg-rose-600 text-center p-5 rounded-xl transition-all duration-200 mr-5 ml-5"> Torna indietro </a>
+            <button class="bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-center p-5 rounded-xl transition-all duration-200 mr-5 ml-5 cursor-pointer" onclick="addImage()"> Aggiungi immagine </button>
+            <button class="bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-center p-5 rounded-xl transition-all duration-200 mr-5 ml-5 cursor-pointer" onclick="createSequence()"> Crea sequenza </button>
         </div>
+        
+        <div id="container" class="text-white flex flex-col text-2xl mb-14 flex flex-row flex-wrap justify-center items-center overflow-auto">
+            <div id="div1" class="ml-5 mr-5 mt-5 mb-5">
+                <div id="inputDiv1">
+                    <label for="input1" class="cursor-pointer bg-white border-2 border-solid text-black border-black flex flex-col justify-center items-center rounded-xl w-80 h-80"> 
+                        <p class="mb-6 text-xl"> Inserisci la 1° immagine  </p>
+                        <i class="fa-solid fa-upload text-2xl"></i>
+                    </label>
+                    <input type="file" name="input1" id="input1" accept=".jpg, .webp, .png" class="hidden" onchange="insertedImage(1)">
+                </div>
+                <div id="imageDiv1" class="hidden w-80 h-80 relative">
+                    <img id="image1" src="" class="w-full h-full object-cover rounded-xl">
+                    <button class="rounded-full bg-red-500 hover:bg-red-600 active:bg-red-700 transition-all duration-200 absolute -right-3 -top-3 w-12 h-12" onclick="removedImage(1)"> <i class="fa-solid fa-xmark text-white"></i> </button>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <script>
+
+            var container = document.getElementById('container');
+            var imageCount = 1;
+            let sequenceData = {};
+
+            function insertedImage(id)
+            {
+                let inputDiv = document.getElementById('inputDiv' + id);
+                let input = document.getElementById('input' + id)
+                let imageDiv = document.getElementById('imageDiv' + id);
+                let img = document.getElementById('image' + id);
+
+                inputDiv.classList.add("hidden");
+                imageDiv.classList.remove("hidden");
+
+                const file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                    const dataURL = e.target.result;
+                    img.src = dataURL;
+                    // Salva l'immagine (in formato base64) nell'oggetto sequenceData
+                    sequenceData[id] = dataURL;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            function removedImage(id)
+            {
+                let inputDiv = document.getElementById('inputDiv' + id);
+                let input = document.getElementById('input' + id)
+                let imageDiv = document.getElementById('imageDiv' + id);
+                let img = document.getElementById('image' + id);
+
+                inputDiv.classList.remove("hidden");
+                imageDiv.classList.add("hidden");
+
+                img.src = null;
+                delete sequenceData[id];
+            }
+
+            function addImage()
+            {
+                imageCount++;
+
+                let inputDiv = document.createElement('div');
+                inputDiv.id = `div${imageCount}`;
+
+                inputDiv.innerHTML = `
+                    <div id="inputDiv${imageCount}" class="ml-5 mr-5 mt-5 mb-5">
+                        <label for="input${imageCount}" class="cursor-pointer bg-white border-2 border-solid text-black border-black flex flex-col justify-center items-center rounded-xl w-80 h-80"> 
+                            <p class="mb-6 text-xl"> Inserisci la ${imageCount}° immagine  </p>
+                            <i class="fa-solid fa-upload text-2xl"></i>
+                        </label>
+                        <input type="file" name="input${imageCount}" id="input${imageCount}" accept=".jpg, .webp, .png" class="hidden" onchange="insertedImage(${imageCount})">
+                    </div>
+                    <div id="imageDiv${imageCount}" class="hidden w-80 h-80 relative ml-5 mr-5 mt-5 mb-5">
+                        <img id="image${imageCount}" src="" class="w-full h-full object-cover rounded-xl">
+                        <button class="rounded-full bg-red-500 hover:bg-red-600 active:bg-red-700 transition-all duration-200 absolute -right-3 -top-3 w-12 h-12" onclick="removedImage(${imageCount})"> <i class="fa-solid fa-xmark text-white"></i> </button>
+                    </div>
+                `
+
+                container.appendChild(inputDiv);
+            }
+
+            // Funzione per creare il file JSON e forzare il download
+            function createSequence() {
+
+                let completed = true;
+
+                for (let i = 1; i < imageCount + 1; i++) 
+                {
+                    if(sequenceData[i] == null)
+                    {
+                        completed = false;
+                        break;   
+                    }
+                }
+
+                if(completed == false)
+                {
+                    alert("Attenzione, non hai inserito tutte le immagini!");
+                    return;
+                }
+
+                // Serializza l'oggetto contenente le immagini
+                const jsonString = JSON.stringify(sequenceData, null, 2);
+
+                // Crea un Blob a partire dalla stringa JSON
+                const blob = new Blob([jsonString], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+
+                // Crea un link temporaneo per il download
+                const link = document.createElement("a");
+
+                link.href = url;
+                link.download = "sequence.json";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+        </script>
     </body>
 </html>
